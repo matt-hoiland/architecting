@@ -39,7 +39,7 @@ PROJECT_NETWORK=architecting
 I want to explore the following:
 
 * [x] mongodb containerization with docker
-* [ ] mongodb go driver
+* [x] mongodb go driver
 * [ ] liveness probe exposure from program (kube prep)
 * [ ] 1:1 mapping between live service and mongo collection
 * [ ] jsonrpc
