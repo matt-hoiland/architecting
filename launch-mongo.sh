@@ -65,3 +65,5 @@ ensureMongoContainerRunning
 
 alias dbconn="docker exec -it ${MONGO_CONTAINER_NAME} mongosh"
 echo "Run '\$ dbconn' to connect to mongo"
+
+set +e // Return to normal shell error handling
