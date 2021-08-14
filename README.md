@@ -1,6 +1,10 @@
 # architecting
 Just a space to explore different microservice tools in go
 
+## Services
+
+* `user`: A go service abstracting mongo transactions with the `arch.user` collection. [Details here.](doc/user/README.md)
+
 ## Launching mongo
 
 A real hack and slash script to spin up the database, probably should use something like `docker-compose`
