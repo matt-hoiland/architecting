@@ -3,7 +3,7 @@ Just a space to explore different microservice tools in go
 
 ## Services
 
-* `user`: A go service abstracting mongo transactions with the `arch.user` collection. [Details here.](doc/user/README.md)
+* `authn`: A go service abstracting mongo transactions with the `user.credentials` collection. [Details here.](doc/authn/README.md)
 
 ## Launching mongo
 

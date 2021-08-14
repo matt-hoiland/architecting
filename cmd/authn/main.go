@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	ServiceName     = "UserService"
+	ServiceName     = "AuthNService"
 	DefaultLogLevel = "INFO"
 )
 
