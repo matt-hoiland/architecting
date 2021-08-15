@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/rand"
 
 	"github.com/matt-hoiland/architecting/data"
@@ -13,7 +14,7 @@ const (
 	SaltLength = 32
 )
 
-func debug(api *auth.AuthAPI) {
+func debug(ctx context.Context, api *auth.AuthAPI) {
 	matt := data.UserCredentials{
 		Email: "noone@nowhere.com",
 		Hash:  make([]byte, HashLength),
@@ -22,12 +23,12 @@ func debug(api *auth.AuthAPI) {
 	rand.Read(matt.Hash)
 	rand.Read(matt.Salt)
 
-	id, err := api.InsertCredentials(&matt)
+	id, err := api.InsertCredentials(ctx, &matt)
 	if err != nil {
 		log.Error(err)
 	}
 	log.Debug("id: " + id.Hex())
-	doc, err := api.FindCredentialsByID(id)
+	doc, err := api.FindCredentialsByID(ctx, id)
 	if err != nil {
 		log.Error(err)
 	}

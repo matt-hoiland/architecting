@@ -64,7 +64,7 @@ func main() {
 
 	collection := client.Database(auth.UserDatabase).Collection(auth.CredentialsCollection)
 	authAPI := auth.NewAuthAPI(collection)
-	debug(authAPI)
+	debug(ctx, authAPI)
 
 	http.HandleFunc("/health/mongodb", makeMongoHealthCheckHandler(ctx, client))
 
