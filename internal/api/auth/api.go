@@ -2,7 +2,11 @@ package auth
 
 import (
 	"context"
+	"errors"
 
+	"github.com/matt-hoiland/architecting/data"
+	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -34,4 +38,53 @@ func NewAuthAPI(credentials Collector) *AuthAPI {
 	return &AuthAPI{
 		credentials: credentials,
 	}
+}
+
+func (api *AuthAPI) InsertCredentials(creds *data.UserCredentials) (primitive.ObjectID, error) {
+	result, err := api.credentials.InsertOne(context.TODO(), creds)
+	if err != nil {
+		log.Error(err)
+		return primitive.NilObjectID, err
+	}
+	if id, ok := result.InsertedID.(primitive.ObjectID); ok {
+		return id, nil
+	}
+	return primitive.NilObjectID, errors.New("unrecognized type returned")
+}
+
+func (api *AuthAPI) GetCredentialsByID(id primitive.ObjectID) (*data.UserCredentials, error) {
+	return api.GetCredentials("_id", id)
+}
+
+func (api *AuthAPI) GetCredentialsByEmail(email string) (*data.UserCredentials, error) {
+	return api.GetCredentials("email", email)
+}
+
+func (api *AuthAPI) GetCredentials(key string, value interface{}) (*data.UserCredentials, error) {
+	filter := primitive.D{primitive.E{Key: key, Value: value}}
+	res := api.credentials.FindOne(context.TODO(), filter)
+
+	var creds data.UserCredentials
+	err := res.Decode(&creds)
+	if err != nil {
+		return nil, err
+	}
+
+	return &creds, nil
+}
+
+func (api *AuthAPI) UpdateCredentials(creds *data.UserCredentials) (*data.UserCredentials, error) {
+	return nil, nil
+}
+
+func (api *AuthAPI) DeleteCredentialsByID(id primitive.ObjectID) error {
+	return nil
+}
+
+func (api *AuthAPI) DeleteCredentialsByName(accountName string) error {
+	return nil
+}
+
+func (api *AuthAPI) DeleteCredentials(creds *data.UserCredentials) error {
+	return nil
 }
