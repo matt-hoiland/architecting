@@ -64,13 +64,13 @@ func main() {
 
 	collection := client.Database(authn.UserDatabase).Collection(authn.CredentialsCollection)
 	authnAPI := authn.NewAuthNAPI(collection)
-	_ = authnAPI
+	debug(authnAPI)
 
 	http.HandleFunc("/health/mongodb", makeMongoHealthCheckHandler(ctx, client))
 
-	if err = http.ListenAndServe(":8080", nil); err != nil {
-		log.Panic(err)
-	}
+	// if err = http.ListenAndServe(":8080", nil); err != nil {
+	// 	log.Panic(err)
+	// }
 }
 
 func makeMongoHealthCheckHandler(ctx context.Context, client *mongo.Client) http.HandlerFunc {
