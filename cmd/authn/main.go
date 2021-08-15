@@ -3,28 +3,32 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/matt-hoiland/architecting/internal/api/authn"
 	"github.com/matt-hoiland/architecting/lib/flag"
 	"github.com/matt-hoiland/architecting/lib/logging"
-	imongo "github.com/matt-hoiland/architecting/lib/mongo"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 const (
-	ServiceName      = "AuthNService"
-	DefaultLogLevel  = "INFO"
-	DefaultMongoHost = "localhost"
-	DefaultMongoPort = "27117" // NOTE: See launch-mongo.sh for why it is 27017
+	ServiceName         = "AuthNService"
+	DefaultLogLevel     = "INFO"
+	DefaultMongoHost    = "localhost"
+	DefaultMongoPort    = "27117" // NOTE: See launch-mongo.sh for why it is not 27017
+	DefaultMongoTimeout = 5       // seconds
 )
 
 var (
 	logLevel = flag.String("log-level", "LOG_LEVEL", DefaultLogLevel, "logging level for service")
 	mhost    = flag.String("mongo-host", "MONGO_HOST", DefaultMongoHost, "hostname of mongodb server")
 	mport    = flag.String("mongo-port", "MONGO_PORT", DefaultMongoPort, "port of mongodb server")
+	mtimeout = flag.Int("mongo-timeout", "MONGO_TIMEOUT", DefaultMongoTimeout, "number of seconds to use for mongo's ServerSelectionTimeout value")
 )
 
 func main() {
@@ -37,8 +41,13 @@ func main() {
 	log.Info(ServiceName + " starting ...")
 	defer log.Info(ServiceName + " closing ...")
 
-	mongoURI := imongo.URI(*mhost, *mport)
-	client, collection, err := imongo.Connect(ctx, mongoURI, authn.UserDatabase, authn.CredentialsCollection)
+	mongoURI := fmt.Sprintf("mongodb://%s:%s", *mhost, *mport)
+	opts := options.Client().
+		ApplyURI(mongoURI).
+		SetAppName(ServiceName).
+		SetServerSelectionTimeout(time.Duration(*mtimeout) * time.Second)
+
+	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error":      err,
@@ -53,6 +62,7 @@ func main() {
 		}
 	}()
 
+	collection := client.Database(authn.UserDatabase).Collection(authn.CredentialsCollection)
 	authnAPI := authn.NewAuthNAPI(collection)
 	_ = authnAPI
 
