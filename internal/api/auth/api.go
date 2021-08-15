@@ -52,15 +52,15 @@ func (api *AuthAPI) InsertCredentials(creds *data.UserCredentials) (primitive.Ob
 	return primitive.NilObjectID, errors.New("unrecognized type returned")
 }
 
-func (api *AuthAPI) GetCredentialsByID(id primitive.ObjectID) (*data.UserCredentials, error) {
-	return api.GetCredentials("_id", id)
+func (api *AuthAPI) FindCredentialsByID(id primitive.ObjectID) (*data.UserCredentials, error) {
+	return api.FindCredentials("_id", id)
 }
 
-func (api *AuthAPI) GetCredentialsByEmail(email string) (*data.UserCredentials, error) {
-	return api.GetCredentials("email", email)
+func (api *AuthAPI) FindCredentialsByEmail(email string) (*data.UserCredentials, error) {
+	return api.FindCredentials("email", email)
 }
 
-func (api *AuthAPI) GetCredentials(key string, value interface{}) (*data.UserCredentials, error) {
+func (api *AuthAPI) FindCredentials(key string, value interface{}) (*data.UserCredentials, error) {
 	filter := primitive.D{primitive.E{Key: key, Value: value}}
 	res := api.credentials.FindOne(context.TODO(), filter)
 
@@ -77,14 +77,14 @@ func (api *AuthAPI) UpdateCredentials(creds *data.UserCredentials) (*data.UserCr
 	return nil, nil
 }
 
-func (api *AuthAPI) DeleteCredentialsByID(id primitive.ObjectID) error {
+func (api *AuthAPI) RemoveCredentialsByID(id primitive.ObjectID) error {
 	return nil
 }
 
-func (api *AuthAPI) DeleteCredentialsByName(accountName string) error {
+func (api *AuthAPI) RemoveCredentialsByName(accountName string) error {
 	return nil
 }
 
-func (api *AuthAPI) DeleteCredentials(creds *data.UserCredentials) error {
+func (api *AuthAPI) RemoveCredentials(creds *data.UserCredentials) error {
 	return nil
 }

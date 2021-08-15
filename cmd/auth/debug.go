@@ -27,7 +27,7 @@ func debug(api *auth.AuthAPI) {
 		log.Error(err)
 	}
 	log.Debug("id: " + id.Hex())
-	doc, err := api.GetCredentialsByID(id)
+	doc, err := api.FindCredentialsByID(id)
 	if err != nil {
 		log.Error(err)
 	}
