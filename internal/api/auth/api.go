@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/matt-hoiland/architecting/data"
+	itesting "github.com/matt-hoiland/architecting/lib/testing"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -32,17 +33,17 @@ func NewAuthAPI(credentials Collector) *AuthAPI {
 
 // DeleteCredentials removes the given data from the credentials collection.
 func (api *AuthAPI) DeleteCredentials(ctx context.Context, creds *data.UserCredentials) error {
-	return nil
+	return itesting.ErrMethodUnimplemented
 }
 
 // DeleteCredentialsByEmail removes the most recent credentials document with the matching email.
 func (api *AuthAPI) DeleteCredentialsByEmail(ctx context.Context, email string) error {
-	return nil
+	return itesting.ErrMethodUnimplemented
 }
 
 // DeleteCredentialsByID removes the most recent credentials document with the matching ID.
 func (api *AuthAPI) DeleteCredentialsByID(ctx context.Context, id primitive.ObjectID) error {
-	return nil
+	return itesting.ErrMethodUnimplemented
 }
 
 // FindCredentials locates the most recent single credentials document which has the given value
@@ -85,5 +86,5 @@ func (api *AuthAPI) InsertCredentials(ctx context.Context, creds *data.UserCrede
 
 // UpdateCredentials updates the credentials document corresponding to the same object ID.
 func (api *AuthAPI) UpdateCredentials(ctx context.Context, creds *data.UserCredentials) (*data.UserCredentials, error) {
-	return nil, nil
+	return nil, itesting.ErrMethodUnimplemented
 }
