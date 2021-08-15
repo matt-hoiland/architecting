@@ -1,5 +1,12 @@
 package authn
 
+import (
+	"context"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
 const (
 	// UserDatabase names the mongo database.
 	UserDatabase = "user"
@@ -21,4 +28,5 @@ func NewAuthNAPI(collection DBCollection) *AuthNAPI {
 // API Dependencies
 
 type DBCollection interface {
+	InsertOne(ctx context.Context, document interface{}, opts ...*options.InsertOneOptions) (*mongo.InsertOneResult, error)
 }
