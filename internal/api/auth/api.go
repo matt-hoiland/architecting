@@ -40,26 +40,6 @@ func NewAuthAPI(credentials Collector) *AuthAPI {
 	}
 }
 
-func (api *AuthAPI) InsertCredentials(creds *data.UserCredentials) (primitive.ObjectID, error) {
-	result, err := api.credentials.InsertOne(context.TODO(), creds)
-	if err != nil {
-		log.Error(err)
-		return primitive.NilObjectID, err
-	}
-	if id, ok := result.InsertedID.(primitive.ObjectID); ok {
-		return id, nil
-	}
-	return primitive.NilObjectID, errors.New("unrecognized type returned")
-}
-
-func (api *AuthAPI) FindCredentialsByID(id primitive.ObjectID) (*data.UserCredentials, error) {
-	return api.FindCredentials("_id", id)
-}
-
-func (api *AuthAPI) FindCredentialsByEmail(email string) (*data.UserCredentials, error) {
-	return api.FindCredentials("email", email)
-}
-
 func (api *AuthAPI) FindCredentials(key string, value interface{}) (*data.UserCredentials, error) {
 	filter := primitive.D{primitive.E{Key: key, Value: value}}
 	res := api.credentials.FindOne(context.TODO(), filter)
@@ -73,18 +53,38 @@ func (api *AuthAPI) FindCredentials(key string, value interface{}) (*data.UserCr
 	return &creds, nil
 }
 
-func (api *AuthAPI) UpdateCredentials(creds *data.UserCredentials) (*data.UserCredentials, error) {
-	return nil, nil
+func (api *AuthAPI) FindCredentialsByEmail(email string) (*data.UserCredentials, error) {
+	return api.FindCredentials("email", email)
+}
+
+func (api *AuthAPI) FindCredentialsByID(id primitive.ObjectID) (*data.UserCredentials, error) {
+	return api.FindCredentials("_id", id)
+}
+
+func (api *AuthAPI) InsertCredentials(creds *data.UserCredentials) (primitive.ObjectID, error) {
+	result, err := api.credentials.InsertOne(context.TODO(), creds)
+	if err != nil {
+		log.Error(err)
+		return primitive.NilObjectID, err
+	}
+	if id, ok := result.InsertedID.(primitive.ObjectID); ok {
+		return id, nil
+	}
+	return primitive.NilObjectID, errors.New("unrecognized type returned")
+}
+
+func (api *AuthAPI) RemoveCredentials(creds *data.UserCredentials) error {
+	return nil
+}
+
+func (api *AuthAPI) RemoveCredentialsByEmail(email string) error {
+	return nil
 }
 
 func (api *AuthAPI) RemoveCredentialsByID(id primitive.ObjectID) error {
 	return nil
 }
 
-func (api *AuthAPI) RemoveCredentialsByName(accountName string) error {
-	return nil
-}
-
-func (api *AuthAPI) RemoveCredentials(creds *data.UserCredentials) error {
-	return nil
+func (api *AuthAPI) UpdateCredentials(creds *data.UserCredentials) (*data.UserCredentials, error) {
+	return nil, nil
 }
