@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/matt-hoiland/architecting/internal/api/authn"
+	"github.com/matt-hoiland/architecting/internal/api/auth"
 	"github.com/matt-hoiland/architecting/lib/flag"
 	"github.com/matt-hoiland/architecting/lib/logging"
 	log "github.com/sirupsen/logrus"
@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	ServiceName         = "AuthNService"
+	ServiceName         = "AuthService"
 	DefaultLogLevel     = "INFO"
 	DefaultMongoHost    = "localhost"
 	DefaultMongoPort    = "27117" // NOTE: See launch-mongo.sh for why it is not 27017
@@ -52,8 +52,8 @@ func main() {
 		log.WithFields(log.Fields{
 			"error":      err,
 			"mongoURI":   mongoURI,
-			"db":         authn.UserDatabase,
-			"collection": authn.CredentialsCollection,
+			"db":         auth.UserDatabase,
+			"collection": auth.CredentialsCollection,
 		}).Fatalf("Error connecting to mongodb")
 	}
 	defer func() {
@@ -62,9 +62,9 @@ func main() {
 		}
 	}()
 
-	collection := client.Database(authn.UserDatabase).Collection(authn.CredentialsCollection)
-	authnAPI := authn.NewAuthNAPI(collection)
-	debug(authnAPI)
+	collection := client.Database(auth.UserDatabase).Collection(auth.CredentialsCollection)
+	authAPI := auth.NewAuthAPI(collection)
+	debug(authAPI)
 
 	http.HandleFunc("/health/mongodb", makeMongoHealthCheckHandler(ctx, client))
 

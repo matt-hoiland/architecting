@@ -1,4 +1,4 @@
-package authn
+package auth
 
 import (
 	"context"
@@ -15,12 +15,12 @@ const (
 	CredentialsCollection = "credentials"
 )
 
-type AuthNAPI struct {
+type AuthAPI struct {
 	collection DBCollection
 }
 
-func NewAuthNAPI(collection DBCollection) *AuthNAPI {
-	return &AuthNAPI{
+func NewAuthAPI(collection DBCollection) *AuthAPI {
+	return &AuthAPI{
 		collection: collection,
 	}
 }

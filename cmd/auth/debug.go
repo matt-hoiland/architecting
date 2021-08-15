@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 
 	"github.com/matt-hoiland/architecting/data"
-	"github.com/matt-hoiland/architecting/internal/api/authn"
+	"github.com/matt-hoiland/architecting/internal/api/auth"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -13,7 +13,7 @@ const (
 	SaltLength = 32
 )
 
-func debug(api *authn.AuthNAPI) {
+func debug(api *auth.AuthAPI) {
 	matt := data.UserCredentials{
 		Email: "noone@nowhere.com",
 		Hash:  make([]byte, HashLength),
