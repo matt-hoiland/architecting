@@ -10,7 +10,7 @@ import (
 )
 
 func (api *AuthAPI) InsertCredentials(creds *data.UserCredentials) (primitive.ObjectID, error) {
-	result, err := api.collection.InsertOne(context.TODO(), creds)
+	result, err := api.credentials.InsertOne(context.TODO(), creds)
 	if err != nil {
 		log.Error(err)
 		return primitive.NilObjectID, err

@@ -17,7 +17,7 @@ func (api *AuthAPI) GetCredentialsByEmail(email string) (*data.UserCredentials, 
 
 func (api *AuthAPI) GetCredentials(key string, value interface{}) (*data.UserCredentials, error) {
 	filter := primitive.D{primitive.E{Key: key, Value: value}}
-	res := api.collection.FindOne(context.TODO(), filter)
+	res := api.credentials.FindOne(context.TODO(), filter)
 
 	var creds data.UserCredentials
 	err := res.Decode(&creds)
