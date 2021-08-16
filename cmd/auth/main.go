@@ -11,6 +11,8 @@ import (
 	"github.com/matt-hoiland/architecting/lib/flag"
 	"github.com/matt-hoiland/architecting/lib/logging"
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -52,7 +54,7 @@ func main() {
 		log.WithFields(log.Fields{
 			"error":      err,
 			"mongoURI":   mongoURI,
-			"db":         auth.UserDatabase,
+			"db":         auth.AuthDatabase,
 			"collection": auth.CredentialsCollection,
 		}).Fatalf("Error connecting to mongodb")
 	}
@@ -62,7 +64,24 @@ func main() {
 		}
 	}()
 
-	collection := client.Database(auth.UserDatabase).Collection(auth.CredentialsCollection)
+	db := client.Database(auth.AuthDatabase)
+	specs, err := db.ListCollectionSpecifications(ctx, primitive.M{})
+	if err != nil {
+		log.Error(err)
+	}
+	spec := specs[0]
+	var options primitive.M
+	err = bson.Unmarshal(spec.Options, &options)
+	if err != nil {
+		log.Error(err)
+	}
+
+	// err = db.CreateCollection(ctx, auth.CredentialsCollection, options.CreateCollection().SetValidator(data.AuthCredentialsSchema))
+	// if err != nil {
+	// 	log.Error(err)
+	// }
+
+	collection := client.Database(auth.AuthDatabase).Collection(auth.CredentialsCollection)
 	authAPI := auth.NewAuthAPI(collection)
 	debug(ctx, authAPI)
 
