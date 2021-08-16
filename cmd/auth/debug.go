@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 
@@ -32,5 +33,7 @@ func debug(ctx context.Context, api *auth.AuthAPI) {
 	if err != nil {
 		log.Error(err)
 	}
+	log.Debugf("crd: %v", matt)
 	log.Debugf("doc: %v", doc)
+	log.Debugf("hash equals: %t, salt equals: %t", bytes.Equal(matt.Hash, doc.Hash), bytes.Equal(matt.Salt, doc.Salt))
 }
