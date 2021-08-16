@@ -12,8 +12,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// UserCredentials represents the document model stored in mongo.
-type UserCredentials struct {
+// AuthCredentials represents the document model stored in mongo.
+type AuthCredentials struct {
 	ID                   primitive.ObjectID `bson:"_id,omitempty"        json:"_id,omitempty"`
 	Email                string             `bson:"email"                json:"email"`
 	Hash                 ByteSlice          `bson:"hash"                 json:"-"`

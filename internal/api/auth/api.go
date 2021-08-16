@@ -32,7 +32,7 @@ func NewAuthAPI(credentials Collector) *AuthAPI {
 }
 
 // DeleteCredentials removes the given data from the credentials collection.
-func (api *AuthAPI) DeleteCredentials(ctx context.Context, creds *data.UserCredentials) error {
+func (api *AuthAPI) DeleteCredentials(ctx context.Context, creds *data.AuthCredentials) error {
 	return itesting.ErrMethodUnimplemented
 }
 
@@ -48,11 +48,11 @@ func (api *AuthAPI) DeleteCredentialsByID(ctx context.Context, id primitive.Obje
 
 // FindCredentials locates the most recent single credentials document which has the given value
 // for the given key.
-func (api *AuthAPI) FindCredentials(ctx context.Context, key string, value interface{}) (*data.UserCredentials, error) {
+func (api *AuthAPI) FindCredentials(ctx context.Context, key string, value interface{}) (*data.AuthCredentials, error) {
 	filter := primitive.D{primitive.E{Key: key, Value: value}}
 	res := api.credentials.FindOne(ctx, filter)
 
-	var creds data.UserCredentials
+	var creds data.AuthCredentials
 	err := res.Decode(&creds)
 	if err != nil {
 		return nil, err
@@ -62,17 +62,17 @@ func (api *AuthAPI) FindCredentials(ctx context.Context, key string, value inter
 }
 
 // FindCredentialsByEmail locates the most recent credentials document which has the given email,
-func (api *AuthAPI) FindCredentialsByEmail(ctx context.Context, email string) (*data.UserCredentials, error) {
+func (api *AuthAPI) FindCredentialsByEmail(ctx context.Context, email string) (*data.AuthCredentials, error) {
 	return api.FindCredentials(ctx, "email", email)
 }
 
 // FindCredentialsByID locates the most recent credentials document which has the given ID,
-func (api *AuthAPI) FindCredentialsByID(ctx context.Context, id primitive.ObjectID) (*data.UserCredentials, error) {
+func (api *AuthAPI) FindCredentialsByID(ctx context.Context, id primitive.ObjectID) (*data.AuthCredentials, error) {
 	return api.FindCredentials(ctx, "_id", id)
 }
 
 // InsertCredetials inserts the given data into the credentials collection and returns its object ID.
-func (api *AuthAPI) InsertCredentials(ctx context.Context, creds *data.UserCredentials) (primitive.ObjectID, error) {
+func (api *AuthAPI) InsertCredentials(ctx context.Context, creds *data.AuthCredentials) (primitive.ObjectID, error) {
 	result, err := api.credentials.InsertOne(ctx, creds)
 	if err != nil {
 		log.Error(err)
@@ -85,6 +85,6 @@ func (api *AuthAPI) InsertCredentials(ctx context.Context, creds *data.UserCrede
 }
 
 // UpdateCredentials updates the credentials document corresponding to the same object ID.
-func (api *AuthAPI) UpdateCredentials(ctx context.Context, creds *data.UserCredentials) (*data.UserCredentials, error) {
+func (api *AuthAPI) UpdateCredentials(ctx context.Context, creds *data.AuthCredentials) (*data.AuthCredentials, error) {
 	return nil, itesting.ErrMethodUnimplemented
 }
