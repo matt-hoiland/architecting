@@ -12,7 +12,7 @@ import (
 
 const (
 	// UserDatabase names the mongo database.
-	UserDatabase = "user"
+	UserDatabase = "auth"
 
 	// CredentialsCollection names the credentials collection
 	CredentialsCollection = "credentials"
