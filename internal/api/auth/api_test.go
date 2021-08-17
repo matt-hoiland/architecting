@@ -100,7 +100,7 @@ func TestAuthAPI_InsertCredentials(t *testing.T) {
 	type Test struct {
 		Name            string
 		Contexter       func() context.Context
-		Creds           *data.AuthCredentials
+		Creds           *data.Credentials
 		ObjectID        primitive.ObjectID
 		Err             error
 		SetExpectations func(test Test, coll *mocks.MockCollector)
@@ -119,7 +119,7 @@ func TestAuthAPI_InsertCredentials(t *testing.T) {
 	tests := []Test{
 		{
 			Name: "happy",
-			Creds: &data.AuthCredentials{
+			Creds: &data.Credentials{
 				Email: testEmail,
 				Hash:  testHash,
 				Salt:  testSalt,

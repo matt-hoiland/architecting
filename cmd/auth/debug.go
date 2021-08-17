@@ -16,7 +16,7 @@ const (
 )
 
 func debug(ctx context.Context, api *auth.AuthAPI) {
-	matt := data.AuthCredentials{
+	matt := data.Credentials{
 		Email: "noone@nowhere.com",
 		Hash:  make([]byte, HashLength),
 		Salt:  make([]byte, SaltLength),
