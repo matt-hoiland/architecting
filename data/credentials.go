@@ -17,6 +17,11 @@ const (
 	SaltMinLength = 32
 )
 
+var (
+	// Timestamper allows time.Now() to mocked for testing purposes
+	Timestamper func() time.Time = time.Now
+)
+
 // Credentials represents the document model stored in mongo.
 type Credentials struct {
 	// ID is the mongo ObjectID of the document.
@@ -46,9 +51,16 @@ type Credentials struct {
 }
 
 // NewCredentials builds and returns a new instance of Credentials with the given data. It sets
-// the TimestampCreated field on the instance automatically.
+// the TimestampCreated field on the instance automatically. It will not fail. It will not validate
+// the given data. Data validation is performed by mongo through CredentialsSchema with any higher
+// order validation being done by the CRUD operations in go.
 func NewCredentials(email string, hash, salt ByteSlice) *Credentials {
-	panic("unimplemented")
+	return &Credentials{
+		Email:            email,
+		Hash:             hash,
+		Salt:             salt,
+		TimestampCreated: Timestamper(),
+	}
 }
 
 // CredentialsSchema is a jsonSchema document passed to CreateCollection when constructing
