@@ -10,14 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-const (
-	// AuthDatabase names the mongo database.
-	AuthDatabase = "auth"
-
-	// CredentialsCollection names the credentials collection
-	CredentialsCollection = "credentials"
-)
-
 // AuthAPI owns and performs database transactions to the credentials collection as well as
 // future authn and authz operations.
 type AuthAPI struct {

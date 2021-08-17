@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/matt-hoiland/architecting/data"
 	"github.com/matt-hoiland/architecting/internal/api/auth"
 	"github.com/matt-hoiland/architecting/lib/flag"
 	"github.com/matt-hoiland/architecting/lib/logging"
@@ -54,8 +55,8 @@ func main() {
 		log.WithFields(log.Fields{
 			"error":      err,
 			"mongoURI":   mongoURI,
-			"db":         auth.AuthDatabase,
-			"collection": auth.CredentialsCollection,
+			"db":         data.AuthDatabase,
+			"collection": data.CredentialsCollection,
 		}).Fatalf("Error connecting to mongodb")
 	}
 	defer func() {
@@ -64,7 +65,7 @@ func main() {
 		}
 	}()
 
-	db := client.Database(auth.AuthDatabase)
+	db := client.Database(data.AuthDatabase)
 	specs, err := db.ListCollectionSpecifications(ctx, primitive.M{})
 	if err != nil {
 		log.Error(err)
@@ -81,7 +82,7 @@ func main() {
 	// 	log.Error(err)
 	// }
 
-	collection := client.Database(auth.AuthDatabase).Collection(auth.CredentialsCollection)
+	collection := client.Database(data.AuthDatabase).Collection(data.CredentialsCollection)
 	authAPI := auth.NewAuthAPI(collection)
 	debug(ctx, authAPI)
 
