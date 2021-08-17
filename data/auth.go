@@ -1,6 +1,6 @@
 package data
 
 const (
-	// AuthDatabase names the mongo database.
-	AuthDatabase = "auth"
+	// AuthDatabaseName names the mongo database.
+	AuthDatabaseName = "auth"
 )

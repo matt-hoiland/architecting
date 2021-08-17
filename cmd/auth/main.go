@@ -55,8 +55,8 @@ func main() {
 		log.WithFields(log.Fields{
 			"error":      err,
 			"mongoURI":   mongoURI,
-			"db":         data.AuthDatabase,
-			"collection": data.CredentialsCollection,
+			"db":         data.AuthDatabaseName,
+			"collection": data.CredentialsCollectionName,
 		}).Fatalf("Error connecting to mongodb")
 	}
 	defer func() {
@@ -65,7 +65,7 @@ func main() {
 		}
 	}()
 
-	db := client.Database(data.AuthDatabase)
+	db := client.Database(data.AuthDatabaseName)
 	specs, err := db.ListCollectionSpecifications(ctx, primitive.M{})
 	if err != nil {
 		log.Error(err)
@@ -82,7 +82,7 @@ func main() {
 	// 	log.Error(err)
 	// }
 
-	collection := client.Database(data.AuthDatabase).Collection(data.CredentialsCollection)
+	collection := client.Database(data.AuthDatabaseName).Collection(data.CredentialsCollectionName)
 	authAPI := auth.NewAuthAPI(collection)
 	debug(ctx, authAPI)
 

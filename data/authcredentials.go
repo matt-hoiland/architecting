@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	// CredentialsCollection names the credentials collection
-	CredentialsCollection = "credentials"
+	// CredentialsCollectionName names the credentials collection
+	CredentialsCollectionName = "credentials"
 
 	// TODO: Tie hash and salt minimum lengths to the hashing algorithm's output.
 	// HashMinLength is the minimum number of bytes a hash should be.
